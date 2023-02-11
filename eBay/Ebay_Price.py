@@ -14,15 +14,18 @@ def main():
         products_list = []
         results = soup.find_all('div', {'class': 's-item__info clearfix'})
         for item in results:
-            products = {
-                'title': item.find('div', {'class': "s-item__title"}).get_text(),
-                'sold_price': item.find('span', {'class': "s-item__price"}).get_text(),
-                'sold_date': item.find('span', {'class': "POSITIVE"}),
-                'bids': item.find_all('div', {'class': "s-item__detail s-item__detail--primary"})[1].get_text(),
-                'link': item.find('a', {'class': "s-item__link"})['href'],
-            }
-            # print(products)
-            products_list.append(products)
+            try:
+                products = {
+                    'title': item.find('div', {'class': "s-item__title"}).get_text(),
+                    'sold_price': item.find('span', {'class': "s-item__price"}).get_text(),
+                    'sold_date': item.find('span', {'class': "POSITIVE"}).get_text(),
+                    'bids': item.find_all('div', {'class': "s-item__detail s-item__detail--primary"})[1].get_text(),
+                    'link': item.find('a', {'class': "s-item__link"})['href'],
+                }
+                # print(products)
+                products_list.append(products)
+            except AttributeError:
+                continue
         return products_list
 
     def output(products_list):
